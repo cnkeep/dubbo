@@ -630,6 +630,8 @@ public class ExtensionLoader<T> {
                 EXTENSION_INSTANCES.putIfAbsent(clazz, clazz.newInstance());
                 instance = (T) EXTENSION_INSTANCES.get(clazz);
             }
+
+            // 注入依赖
             injectExtension(instance);
             Set<Class<?>> wrapperClasses = cachedWrapperClasses;
             if (CollectionUtils.isNotEmpty(wrapperClasses)) {
@@ -649,6 +651,11 @@ public class ExtensionLoader<T> {
         return getExtensionClasses().containsKey(name);
     }
 
+    /**
+     * TODO 扫描set方法注入依赖
+     * @param instance
+     * @return
+     */
     private T injectExtension(T instance) {
 
         if (objectFactory == null) {
@@ -746,6 +753,8 @@ public class ExtensionLoader<T> {
 
     /**
      * synchronized in getExtensionClasses
+     *
+     * TODO 扫描META/INF/目录加载配置文件读取SPI列表
      */
     private Map<String, Class<?>> loadExtensionClasses() {
         cacheDefaultExtensionName();
@@ -821,6 +830,15 @@ public class ExtensionLoader<T> {
         }
     }
 
+
+    /**
+     * TODO 读取k/v文件
+     * @param extensionClasses
+     * @param classLoader
+     * @param resourceURL
+     * @param overridden
+     * @param excludedPackages
+     */
     private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader,
                               java.net.URL resourceURL, boolean overridden, String... excludedPackages) {
         try {

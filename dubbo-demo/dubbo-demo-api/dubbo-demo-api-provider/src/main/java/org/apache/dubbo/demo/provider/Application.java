@@ -26,11 +26,11 @@ import java.util.concurrent.CountDownLatch;
 
 public class Application {
     public static void main(String[] args) throws Exception {
-        if (isClassic(args)) {
+//        if (isClassic(args)) {
             startWithExport();
-        } else {
-            startWithBootstrap();
-        }
+//        } else {
+//            startWithBootstrap();
+//        }
     }
 
     private static boolean isClassic(String[] args) {
@@ -44,7 +44,7 @@ public class Application {
 
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         bootstrap.application(new ApplicationConfig("dubbo-demo-api-provider"))
-                .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
+                .registry(new RegistryConfig("zookeeper://127.0.0.1:2182"))
                 .service(service)
                 .start()
                 .await();
@@ -55,7 +55,7 @@ public class Application {
         service.setInterface(DemoService.class);
         service.setRef(new DemoServiceImpl());
         service.setApplication(new ApplicationConfig("dubbo-demo-api-provider"));
-        service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2181"));
+        service.setRegistry(new RegistryConfig("zookeeper://127.0.0.1:2182"));
         service.export();
 
         System.out.println("dubbo service started");
