@@ -950,6 +950,7 @@ public class DubboBootstrap extends GenericEventListener {
                 asyncExportingFutures.add(future);
             } else {
                 sc.export();
+                logger.info("export>>>>>>"+sc);
                 exportedServices.add(sc);
             }
         });

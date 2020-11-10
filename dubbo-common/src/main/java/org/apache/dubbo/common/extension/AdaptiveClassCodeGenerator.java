@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Code generator for Adaptive class
+ * TODO Code generator for Adaptive class针对Adaptive注解生成代理类
  */
 public class AdaptiveClassCodeGenerator {
 

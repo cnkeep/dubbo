@@ -105,6 +105,7 @@ public abstract class AbstractRegistryFactory implements RegistryFactory {
             return DEFAULT_NOP_REGISTRY;
         }
 
+        // TODO 这里重写了url, 使得一个服务只会有一个zkClient连接
         url = URLBuilder.from(url)
                 .setPath(RegistryService.class.getName())
                 .addParameter(INTERFACE_KEY, RegistryService.class.getName())

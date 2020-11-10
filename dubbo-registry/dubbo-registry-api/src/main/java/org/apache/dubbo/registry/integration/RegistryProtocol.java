@@ -160,6 +160,10 @@ public class RegistryProtocol implements Protocol {
         this.protocol = protocol;
     }
 
+    /**
+     * 通过SPI自动注入的，ExtensionLoader.injectExtension
+     * @param registryFactory
+     */
     public void setRegistryFactory(RegistryFactory registryFactory) {
         this.registryFactory = registryFactory;
     }
@@ -192,8 +196,9 @@ public class RegistryProtocol implements Protocol {
 
     @Override
     public <T> Exporter<T> export(final Invoker<T> originInvoker) throws RpcException {
+        // TODO 从配置的注册url中获取注册url, 从而可以获取对应的注册SPI
         URL registryUrl = getRegistryUrl(originInvoker);
-        // url to export locally
+        // TODO export url转换为provider url
         URL providerUrl = getProviderUrl(originInvoker);
 
         // Subscribe the override data
@@ -254,6 +259,7 @@ public class RegistryProtocol implements Protocol {
         String key = getCacheKey(originInvoker);
 
         return (ExporterChangeableWrapper<T>) bounds.computeIfAbsent(key, s -> {
+            // TODO 这里开始registryProtocol 转为DubboProtocol
             Invoker<?> invokerDelegate = new InvokerDelegate<>(originInvoker, providerUrl);
             return new ExporterChangeableWrapper<>((Exporter<T>) protocol.export(invokerDelegate), originInvoker);
         });
@@ -445,7 +451,7 @@ public class RegistryProtocol implements Protocol {
             return proxyFactory.getInvoker((T) registry, type, url);
         }
 
-        // group="a,b" or group="*"
+        // TODO group分组注册 group="a,b" or group="*"
         Map<String, String> qs = StringUtils.parseQueryString(url.getParameterAndDecoded(REFER_KEY));
         String group = qs.get(GROUP_KEY);
         if (group != null && group.length() > 0) {

@@ -16,21 +16,21 @@
  */
 package org.apache.dubbo.demo.provider;
 
+import com.google.common.collect.Lists;
 import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.config.bootstrap.DubboBootstrap;
 import org.apache.dubbo.demo.DemoService;
+import org.apache.dubbo.demo.GreetingService;
 
 import java.util.concurrent.CountDownLatch;
 
 public class Application {
     public static void main(String[] args) throws Exception {
-//        if (isClassic(args)) {
-            startWithExport();
-//        } else {
-//            startWithBootstrap();
-//        }
+            startWithBootstrap();
+//        startWithExport();
     }
 
     private static boolean isClassic(String[] args) {
@@ -39,13 +39,20 @@ public class Application {
 
     private static void startWithBootstrap() {
         ServiceConfig<DemoServiceImpl> service = new ServiceConfig<>();
+        service.setId(DemoService.class.getName());
         service.setInterface(DemoService.class);
         service.setRef(new DemoServiceImpl());
+
+        ServiceConfig<GreetingServiceImpl> service1 = new ServiceConfig<>();
+        service1.setId(GreetingService.class.getName());
+        service1.setInterface(GreetingService.class);
+        service1.setRef(new GreetingServiceImpl());
+
 
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         bootstrap.application(new ApplicationConfig("dubbo-demo-api-provider"))
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2182"))
-                .service(service)
+                .services(Lists.newArrayList(service,service1))
                 .start()
                 .await();
     }

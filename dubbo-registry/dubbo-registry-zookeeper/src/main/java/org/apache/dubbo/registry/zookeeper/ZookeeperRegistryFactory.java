@@ -39,6 +39,7 @@ public class ZookeeperRegistryFactory extends AbstractRegistryFactory {
 
     @Override
     public Registry createRegistry(URL url) {
+        System.out.println(">>>>>>>>>>"+url);
         return new ZookeeperRegistry(url, zookeeperTransporter);
     }
 

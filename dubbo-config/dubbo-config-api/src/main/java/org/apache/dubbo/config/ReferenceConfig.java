@@ -255,6 +255,7 @@ public class ReferenceConfig<T> extends ReferenceConfigBase<T> {
 
         serviceMetadata.getAttachments().putAll(map);
 
+        // TODO 生成代理对象
         ref = createProxy(map);
 
         serviceMetadata.setTarget(ref);

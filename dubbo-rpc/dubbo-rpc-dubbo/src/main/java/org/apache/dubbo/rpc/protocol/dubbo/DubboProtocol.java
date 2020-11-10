@@ -105,6 +105,7 @@ public class DubboProtocol extends AbstractProtocol {
     private final ConcurrentMap<String, Object> locks = new ConcurrentHashMap<>();
     private final Set<String> optimizers = new ConcurrentHashSet<>();
 
+    // TODO Server 请求处理器
     private ExchangeHandler requestHandler = new ExchangeHandlerAdapter() {
 
         @Override
@@ -283,6 +284,7 @@ public class DubboProtocol extends AbstractProtocol {
 
         // export service.
         String key = serviceKey(url);
+        // TODO exporter
         DubboExporter<T> exporter = new DubboExporter<T>(invoker, key, exporterMap);
         exporterMap.put(key, exporter);
 
@@ -300,6 +302,7 @@ public class DubboProtocol extends AbstractProtocol {
             }
         }
 
+        // TODO 启动服务端口
         openServer(url);
         optimizeSerialization(url);
 
